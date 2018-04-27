@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 The Android Open Source Project
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <!-- Name for the application [CHAR LIMIT=12] -->
+    <string name="app_name">BookStore</string>
+
+    <!-- Label for overflow menu option that inserts fake book data into the app [CHAR LIMIT=20] -->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Label for overflow menu option that deletes all book data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_entries">Delete All Books</string>
+
+    <!-- Title for the activity to add a new pet [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_new_book">Add a Book</string>
+
+    <!-- Title for the activity to edit a pet [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_edit_book">Edit Book</string>
+
+    <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current pet [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="book_name">Book Name *</string>
+
+    <!-- Label for book section in the editor [CHAR LIMIT=30] -->
+    <string name="book_section">Section</string>
+
+    <!-- Label for book author in the editor [CHAR LIMIT=30] -->
+    <string name="book_author">Author</string>
+
+    <!-- Label for book publisher in the editor [CHAR LIMIT=30] -->
+    <string name="book_publisher">Publisher</string>
+
+    <!-- Label for book price in the editor [CHAR LIMIT=30] -->
+    <string name="book_price">Price *</string>
+
+    <!-- Label for book quantity in the editor [CHAR LIMIT=30] -->
+    <string name="book_quantity">Quantity *</string>
+
+    <!-- Label for book supplier in the editor [CHAR LIMIT=30] -->
+    <string name="book_supplier">Supplier</string>
+
+    <!-- Label for book supplier phone in the editor [CHAR LIMIT=30] -->
+    <string name="book_supplier_phone">Supplier Phone</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_name">Book Name</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_section">Bookstore Section</string>
+
+    <!-- Text hint for author field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_author">Author</string>
+
+    <!-- Text hint for publisher field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_publisher">Book Publisher</string>
+
+    <!-- Text hint for price field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_price">Price</string>
+
+    <!-- Text hint for quantity field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_quantity">Quantity in Stock</string>
+
+    <!-- Text hint for supplier field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_supplier">Book Supplier</string>
+
+    <!-- Text hint for supplier phone field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_book_supplier_phone">Book Supplier Phone Number</string>
+
+    <!-- Toast message in editor when new book has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_book_successful">Book saved</string>
+
+    <!-- Toast message in editor when new book has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_book_failed">Error with saving book</string>
+
+    <!-- Toast message in editor when current book was successfully updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_book_successful">Book updated</string>
+
+    <!-- Toast message in editor when current book has failed to be updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_book_failed">Error updating book</string>
+
+    <!-- Toast message to tell user to input a value for Name -->
+    <string name="editor_enter_info">Name, Price, and Quantity are required fields.</string>
+
+    <!-- Message to tell user to input a value for Name, price, and quantity -->
+    <string name="editor_instructions">* Denotes a required field</string>
+
+    <!-- Toast message in editor when current book was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_book_successful">Book deleted</string>
+
+    <!-- Toast message in editor when current book has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_book_failed">Error deleting book</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current book [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this book?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current book [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current book [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current pet [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+
+    <!-- Label for book name in CatalogView List [CHAR LIMIT=30] -->
+    <string name="catalog_book_name_label">Book Name:</string>
+
+    <!-- Label for book price in CatalogView List [CHAR LIMIT=30] -->
+    <string name="catalog_book_price_label">Price:</string>
+
+    <!-- Label for book quantity in CatalogView List [CHAR LIMIT=30] -->
+    <string name="catalog_book_quantity_label">Quantity:</string>
+
+    <!-- Label for sale button in CatalogView List [CHAR LIMIT=5] -->
+    <string name="catalog_sale_button_label">Sale</string>
+
+    <!-- ContentDescription for default book image on editor[CHAR LIMIT=NONE] -->
+    <string name="editor_button_description">Image of current book</string>
+
+    <!-- Title text for the empty view, which describes the empty book image [CHAR LIMIT=50] -->
+     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+
+     <!-- Subtitle text for the empty view that prompts the user to add a book [CHAR LIMIT=50] -->
+     <string name="empty_view_subtitle_text">Get started by adding a book</string>
+</resources>
