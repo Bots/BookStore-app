@@ -53,9 +53,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      /** Log tag for debug purposes */
     private static final String LOG_TAG = EditorActivity.class.getSimpleName();
 
-    /** ImageView to show the pic of the book */
-    //private ImageButton mImageView;
-
     /** EditText field to enter the book's name */
     private EditText mNameEditText;
 
@@ -83,6 +80,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Uri mUri;
 
     private ImageView mImageView;
+
+    private static final int PICK_IMAGE_REQUEST = 0;
 
     /** Boolean flag to keep track of whether book has been edited */
     private boolean mBookHasChanged = false;
@@ -124,7 +123,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
 
         // Find all the relevant views that we will need to read user input from
-        //mImageView = (ImageButton) findViewById(R.id.edit_image_view);
+        mImageView = (ImageButton) findViewById(R.id.edit_image_view);
         mNameEditText = (EditText) findViewById(R.id.edit_book_name);
         mSectionEditText = (EditText) findViewById(R.id.edit_book_section);
         mAuthorEditText = (EditText) findViewById(R.id.edit_book_author);
@@ -133,6 +132,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText = (EditText) findViewById(R.id.edit_book_quantity);
         mSupplierEditText = (EditText) findViewById(R.id.edit_book_supplier);
         mSupplierPhoneEditText = (EditText) findViewById(R.id.edit_book_supplier_phone);
+
+        // Set up onClickListener for imageView
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               openImageSelector();
+            }
+        });
 
         // Setup onTouchListeners on all input fields to determine whether the user has
         // touched them so we can warn about unsaved changes
@@ -146,8 +153,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierPhoneEditText.setOnTouchListener(mTouchListener);
     }
 
-    private void saveBook() {
+    public void openImageSelector() {
+        Intent intent;
 
+        if (Build.VERSION.SDK_INT < 19) {
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+        } else {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        }
+
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private void saveBook() {
         // Read input from fields
         // Use trim to trim leading or trailing whitespace
 
