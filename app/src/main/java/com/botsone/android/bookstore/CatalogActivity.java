@@ -58,6 +58,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         View emptyView = findViewById(R.id.empty_view);
         bookListView.setEmptyView(emptyView);
 
+        ImageView imageView = (ImageView) findViewById(R.id.list_item_image_view);
+
         // Set up and adapter to create a list item for each row of book data in the cursor
         // There is no book data yet (until the loader finishes) so pass null for the cursor
         mCursorAdapter = new BookCursorAdapter(this, null);
@@ -97,6 +99,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // and Star Wars attributes are the values
         ContentValues values = new ContentValues();
 
+        values.put(BookEntry.COLUMN_BOOK_PICTURE, "");
         values.put(BookEntry.COLUMN_BOOK_NAME, "Star Wars");
         values.put(BookEntry.COLUMN_BOOK_SECTION, "Sci-fi");
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, "George Danson");
@@ -148,6 +151,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Define a projection for the columns we are interested in
         String[] projection = {
                 BookEntry._ID,
+                BookEntry.COLUMN_BOOK_PICTURE,
                 BookEntry.COLUMN_BOOK_NAME,
                 BookEntry.COLUMN_BOOK_PRICE,
                 BookEntry.COLUMN_BOOK_QUANTITY

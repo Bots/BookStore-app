@@ -2,10 +2,12 @@ package com.botsone.android.bookstore;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.botsone.android.bookstore.data.BookContract.BookEntry;
@@ -54,19 +56,26 @@ public class BookCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find the views that we want to modify in the list item layout
+        ImageView imageView = (ImageView) view.findViewById(R.id.list_item_image_view);
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
         TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
 
         // Find the columns of book attributes that we want
+        int pictureColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE);
         int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
         int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRICE);
         int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
 
         // Read the book attributes from the cursor for the current book
+        String bookPicture = cursor.getString(pictureColumnIndex);
         String bookName = cursor.getString(nameColumnIndex);
         Double bookPrice = cursor.getDouble(priceColumnIndex);
         String bookQuantity = cursor.getString(quantityColumnIndex);
+
+        //Update the imageView with pic from current pet
+        Uri bookPictureUri = Uri.parse(bookPicture);
+        imageView.setImageURI(bookPictureUri);
 
         // Update the textviews with the attributes for the current pet
         nameTextView.setText(bookName);

@@ -82,6 +82,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private ImageView mImageView;
 
     private static final int PICK_IMAGE_REQUEST = 0;
+    private static final int SEND_MAIL_REQUEST = 1;
 
     /** Boolean flag to keep track of whether book has been edited */
     private boolean mBookHasChanged = false;
@@ -167,6 +168,80 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        // The ACTION_OPEN_DOCUMENT intent was sent with the request code READ_REQUEST_CODE.
+        // If the request code seen here doesn't match, it's the response to some other intent,
+        // and the below code shouldn't run at all.
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            // The document selected by the user won't be returned in the intent.
+            // Instead, a URI to that document will be contained in the return intent
+            // provided to this method as a parameter.  Pull that uri using "resultData.getData()"
+
+            if (resultData != null) {
+                mUri = resultData.getData();
+                Log.i(LOG_TAG, "Uri: " + mUri.toString());
+
+                //mTextView.setText(mUri.toString());
+                mImageView.setImageBitmap(getBitmapFromUri(mUri));
+
+            }
+        } else if (requestCode == SEND_MAIL_REQUEST && resultCode == Activity.RESULT_OK) {
+
+        }
+    }
+
+    public Bitmap getBitmapFromUri(Uri uri) {
+
+        if (uri == null || uri.toString().isEmpty())
+            return null;
+
+        // Get the dimensions of the View
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
+        InputStream input = null;
+        try {
+            input = this.getContentResolver().openInputStream(uri);
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(input, null, bmOptions);
+            input.close();
+
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+
+            input = this.getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bmOptions);
+            input.close();
+            return bitmap;
+
+        } catch (FileNotFoundException fne) {
+            Log.e(LOG_TAG, "Failed to load image.", fne);
+            return null;
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Failed to load image.", e);
+            return null;
+        } finally {
+            try {
+                input.close();
+            } catch (IOException ioe) {
+
+            }
+        }
+    }
+
     private void saveBook() {
         // Read input from fields
         // Use trim to trim leading or trailing whitespace
@@ -189,13 +264,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // and book attributes from the editor are the values.
         ContentValues values = new ContentValues();
 
+        values.put(BookEntry.COLUMN_BOOK_PICTURE, mUri.toString());
         values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
         values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
         values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
-
         values.put(BookEntry.COLUMN_BOOK_PRICE, price);
-
         values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
@@ -339,19 +413,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentBookUri == null) {
             return null;
         }
-
-        // Since the editor shows all pet attributes, define a projection that contains
-        // all columns
-//        String[] projection = {
-//                BookEntry._ID,
-//                BookEntry.COLUMN_BOOK_NAME,
-//                BookEntry.COLUMN_BOOK_SECTION,
-//                BookEntry.COLUMN_BOOK_AUTHOR,
-//                BookEntry.COLUMN_BOOK_PUBLISHER,
-//                BookEntry.COLUMN_BOOK_PRICE,
-//                BookEntry.COLUMN_BOOK_QUANTITY,
-//                BookEntry.COLUMN_BOOK_SUPPLIER,
-//                BookEntry.COLUMN_BOOK_SUPPLIER_PHONE};
 
         // This loader will execute the ContentProvider's query method on
         // a background thread

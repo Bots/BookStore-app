@@ -16,7 +16,7 @@ public class BookDbHelper extends SQLiteOpenHelper{
     /**
      * Database version, if you change schema, increment this
      */
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public BookDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,7 +27,7 @@ public class BookDbHelper extends SQLiteOpenHelper{
         // CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, picture BLOB...
         String SQL_CREATE_BOOKS_TABLE = "CREATE TABLE " + BookEntry.TABLE_NAME + "("
                 + BookEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + BookEntry.COLUMN_BOOK_PICTURE + " TEXT, "
+                + BookEntry.COLUMN_BOOK_PICTURE + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_NAME + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_SECTION + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_AUTHOR + " TEXT, "
