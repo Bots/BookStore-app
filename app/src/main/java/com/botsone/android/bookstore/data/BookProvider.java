@@ -186,7 +186,7 @@ public class BookProvider extends ContentProvider {
 
         // If the COLUMN_BOOK_PRICE key is present, make sure it's not null or negative
         if (values.containsKey(BookEntry.COLUMN_BOOK_PRICE)) {
-            Double price = values.getAsDouble(BookEntry.COLUMN_BOOK_PRICE);
+            Integer price = values.getAsInteger(BookEntry.COLUMN_BOOK_PRICE);
             if (price == null) {
                 throw new IllegalArgumentException("Book requires a price");
             } else if (price < 0) {

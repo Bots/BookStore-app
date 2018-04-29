@@ -27,7 +27,7 @@ public class BookDbHelper extends SQLiteOpenHelper{
         // CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, picture BLOB...
         String SQL_CREATE_BOOKS_TABLE = "CREATE TABLE " + BookEntry.TABLE_NAME + "("
                 + BookEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + BookEntry.COLUMN_BOOK_PICTURE + " BLOB, "
+                + BookEntry.COLUMN_BOOK_PICTURE + " TEXT, "
                 + BookEntry.COLUMN_BOOK_NAME + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_SECTION + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_AUTHOR + " TEXT, "

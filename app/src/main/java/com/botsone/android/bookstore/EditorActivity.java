@@ -11,9 +11,11 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -78,11 +80,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /** EditText field to enter the book's supplier phone number */
     private EditText mSupplierPhoneEditText;
 
-    private static final int PICK_IMAGE_REQUEST = 0;
-
-    private static final int SEND_MAIL_REQUEST = 1;
-
     private Uri mUri;
+
+    private ImageView mImageView;
 
     /** Boolean flag to keep track of whether book has been edited */
     private boolean mBookHasChanged = false;
@@ -136,7 +136,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Setup onTouchListeners on all input fields to determine whether the user has
         // touched them so we can warn about unsaved changes
-
         mNameEditText.setOnTouchListener(mTouchListener);
         mSectionEditText.setOnTouchListener(mTouchListener);
         mAuthorEditText.setOnTouchListener(mTouchListener);
@@ -151,6 +150,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Read input from fields
         // Use trim to trim leading or trailing whitespace
+
         String nameString = mNameEditText.getText().toString().trim();
         String sectionString = mSectionEditText.getText().toString().trim();
         String authorString = mAuthorEditText.getText().toString().trim();
@@ -162,7 +162,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Convert price to double and quantity to int
         double price = Double.parseDouble(priceString);
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         int quantity = Integer.parseInt(quantityString);
 
@@ -175,7 +174,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
         values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
 
-        values.put(BookEntry.COLUMN_BOOK_PRICE, formatter.format(price));
+        values.put(BookEntry.COLUMN_BOOK_PRICE, price);
 
         values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
