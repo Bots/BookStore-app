@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.botsone.android.bookstore.data.BookContract.BookEntry;
+import com.squareup.picasso.Picasso;
 
 /**
  * {@link BookCursorAdapter} is an adapter for a list or grid view
@@ -73,11 +74,20 @@ public class BookCursorAdapter extends CursorAdapter {
         Double bookPrice = cursor.getDouble(priceColumnIndex);
         String bookQuantity = cursor.getString(quantityColumnIndex);
 
-        //Update the imageView with pic from current pet
         Uri bookPictureUri = Uri.parse(bookPicture);
-        imageView.setImageURI(bookPictureUri);
 
-        // Update the textviews with the attributes for the current pet
+
+        //Update the imageView with pic from current book
+        if (bookPicture == null) {
+            Picasso.get().load(R.drawable.ic_empty_shelter).into(imageView);
+            //imageView.setImageURI();
+        } else {
+            Picasso.get().load(bookPictureUri).into(imageView);
+            //imageView.setImageURI(bookPictureUri);
+        }
+
+
+        // Update the textviews with the attributes for the current book
         nameTextView.setText(bookName);
         priceTextView.setText("$" + bookPrice.toString());
         quantityTextView.setText(bookQuantity);

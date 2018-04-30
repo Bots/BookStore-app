@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.botsone.android.bookstore.data.BookContract.BookEntry;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -42,39 +43,61 @@ import java.text.NumberFormat;
 /**
  * Allows user to create a new book or edit an existing one.
  */
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** identifier for the book data loader */
+    /**
+     * identifier for the book data loader
+     */
     private static final int EXISTING_BOOK_LOADER = 0;
 
-    /** Content URI for the existing book (null if it's a new book) */
+    /**
+     * Content URI for the existing book (null if it's a new book)
+     */
     private Uri mCurrentBookUri;
 
-     /** Log tag for debug purposes */
+    /**
+     * Log tag for debug purposes
+     */
     private static final String LOG_TAG = EditorActivity.class.getSimpleName();
 
-    /** EditText field to enter the book's name */
+    /**
+     * EditText field to enter the book's name
+     */
     private EditText mNameEditText;
 
-    /** EditText field to enter the book's store section */
+    /**
+     * EditText field to enter the book's store section
+     */
     private EditText mSectionEditText;
 
-    /** EditText field to enter the book's author */
+    /**
+     * EditText field to enter the book's author
+     */
     private EditText mAuthorEditText;
 
-    /** EditText field to enter the book's publisher */
+    /**
+     * EditText field to enter the book's publisher
+     */
     private EditText mPublisherEditText;
 
-    /** EditText field to enter the book's price */
+    /**
+     * EditText field to enter the book's price
+     */
     private EditText mPriceEditText;
 
-    /** EditText field to enter the book's quantity */
+    /**
+     * EditText field to enter the book's quantity
+     */
     private EditText mQuantityEditText;
 
-    /** EditText field to enter the book's supplier */
+    /**
+     * EditText field to enter the book's supplier
+     */
     private EditText mSupplierEditText;
 
-    /** EditText field to enter the book's supplier phone number */
+    /**
+     * EditText field to enter the book's supplier phone number
+     */
     private EditText mSupplierPhoneEditText;
 
     private Uri mUri;
@@ -84,11 +107,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int PICK_IMAGE_REQUEST = 0;
     private static final int SEND_MAIL_REQUEST = 1;
 
-    /** Boolean flag to keep track of whether book has been edited */
+    /**
+     * Boolean flag to keep track of whether book has been edited
+     */
     private boolean mBookHasChanged = false;
 
-    /** onTouchListener that listens for any user touches on a view, implying that the user is
-     * modifying the view, if so we change mBookHasChanged to true */
+    /**
+     * onTouchListener that listens for any user touches on a view, implying that the user is
+     * modifying the view, if so we change mBookHasChanged to true
+     */
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -138,7 +165,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               openImageSelector();
+                openImageSelector();
             }
         });
 
@@ -264,53 +291,70 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // and book attributes from the editor are the values.
         ContentValues values = new ContentValues();
 
-        values.put(BookEntry.COLUMN_BOOK_PICTURE, mUri.toString());
-        values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
-        values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
-        values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
-        values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
-        values.put(BookEntry.COLUMN_BOOK_PRICE, price);
-        values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
+        if (mUri == null) {
+            values.put(BookEntry.COLUMN_BOOK_PICTURE, mCurrentBookUri.toString());
+            values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
+            values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
+            values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
+            values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
+            values.put(BookEntry.COLUMN_BOOK_PRICE, price);
+            values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+            values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
+            values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
+        } else {
+            values.put(BookEntry.COLUMN_BOOK_PICTURE, mUri.toString());
+            values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
+            values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
+            values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
+            values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
+            values.put(BookEntry.COLUMN_BOOK_PRICE, price);
+            values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+            values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
+            values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
+        }
 
         // Determine if this is a new book or not by checking if mCurrentBookUri is null
-        if (mCurrentBookUri == null) {
-            // NEW BOOK - insert book into the provider, return the URI for the new book
-            Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+        if (mCurrentBookUri == null)
 
-            // Pop toast saying whether or not we had success
-            if (newUri == null) {
-                // ERROR
-                Toast.makeText(this, getString(R.string.editor_insert_book_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Insertion successful
-                Toast.makeText(this, getString(R.string.editor_insert_book_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
+    {
+        // NEW BOOK - insert book into the provider, return the URI for the new book
+        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
 
+        // Pop toast saying whether or not we had success
+        if (newUri == null) {
+            // ERROR
+            Toast.makeText(this, getString(R.string.editor_insert_book_failed),
+                    Toast.LENGTH_SHORT).show();
         } else {
-            // EXISTING BOOK - update book with content URI mCurrentBookUri and pass in the
-            // new ContentValues. Pass null for selection and selectionArgs because mCurrentBookUri
-            // will already identify the correct row in the db that we want to modify
-            int rowsAffected = getContentResolver().update(mCurrentBookUri, values,
-                    null, null);
-
-            // Pop toast saying whether update was successful
-            if (rowsAffected == 0) {
-                // ERROR
-                Toast.makeText(this, getString(R.string.editor_update_book_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // update successful
-                Toast.makeText(this, getString(R.string.editor_update_book_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-
-
+            // Insertion successful
+            Toast.makeText(this, getString(R.string.editor_insert_book_successful),
+                    Toast.LENGTH_SHORT).show();
         }
+
+    } else
+
+    {
+        // EXISTING BOOK - update book with content URI mCurrentBookUri and pass in the
+        // new ContentValues. Pass null for selection and selectionArgs because mCurrentBookUri
+        // will already identify the correct row in the db that we want to modify
+        int rowsAffected = getContentResolver().update(mCurrentBookUri, values,
+                null, null);
+
+        // Pop toast saying whether update was successful
+        if (rowsAffected == 0) {
+            // ERROR
+            Toast.makeText(this, getString(R.string.editor_update_book_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // update successful
+            Toast.makeText(this, getString(R.string.editor_update_book_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+
     }
+
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -435,7 +479,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of book attributes that we're interested in
-            //int pictureColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE);
+            int pictureColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE);
             int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
             int sectionColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SECTION);
             int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_AUTHOR);
@@ -446,7 +490,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int supplierPhoneColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE);
 
             // Extract out the value from the cursor for the given column index
-            // TODO: add picture to retrieved data
+            String picture = cursor.getString(pictureColumnIndex);
             String name = cursor.getString(nameColumnIndex);
             String section = cursor.getString(sectionColumnIndex);
             String author = cursor.getString(authorColumnIndex);
@@ -459,6 +503,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
 
             // Update the views with values from the db
+            Picasso.get().load(picture).into(mImageView);
             mNameEditText.setText(name);
             mSectionEditText.setText(section);
             mAuthorEditText.setText(author);
@@ -473,14 +518,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // If the loader is invalidated, clear out all data from the input fields
-            mNameEditText.setText("");
-            mSectionEditText.setText("");
-            mAuthorEditText.setText("");
-            mPublisherEditText.setText("");
-            mPriceEditText.setText("");
-            mQuantityEditText.setText("");
-            mSupplierEditText.setText("");
-            mSupplierPhoneEditText.setText("");
+        mNameEditText.setText("");
+        mSectionEditText.setText("");
+        mAuthorEditText.setText("");
+        mPublisherEditText.setText("");
+        mPriceEditText.setText("");
+        mQuantityEditText.setText("");
+        mSupplierEditText.setText("");
+        mSupplierPhoneEditText.setText("");
     }
 
     private void showUnsavedChangesDialog(

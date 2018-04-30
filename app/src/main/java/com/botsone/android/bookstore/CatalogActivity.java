@@ -1,12 +1,15 @@
 package com.botsone.android.bookstore;
 
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.botsone.android.bookstore.data.BookContract.BookEntry;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +40,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private static final int BOOK_LOADER = 0;
 
     BookCursorAdapter mCursorAdapter;
+
+    ImageView imageView;
+
+    private Uri mUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         View emptyView = findViewById(R.id.empty_view);
         bookListView.setEmptyView(emptyView);
 
-        ImageView imageView = (ImageView) findViewById(R.id.list_item_image_view);
+        imageView = (ImageView) findViewById(R.id.list_item_image_view);
 
         // Set up and adapter to create a list item for each row of book data in the cursor
         // There is no book data yet (until the loader finishes) so pass null for the cursor
@@ -136,6 +144,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
+
                 insertBook();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
