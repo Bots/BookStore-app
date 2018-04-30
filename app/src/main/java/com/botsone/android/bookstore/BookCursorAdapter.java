@@ -76,13 +76,12 @@ public class BookCursorAdapter extends CursorAdapter {
 
         Uri bookPictureUri = Uri.parse(bookPicture);
 
-
         //Update the imageView with pic from current book
-        if (bookPicture == null) {
-            Picasso.get().load(R.drawable.ic_empty_shelter).into(imageView);
+        if (bookPictureUri == null || bookPicture.equals("")) {
+            Picasso.get().load(R.drawable.ic_empty_shelter).resize(200, 200).into(imageView);
             //imageView.setImageURI();
         } else {
-            Picasso.get().load(bookPictureUri).into(imageView);
+            Picasso.get().load(bookPictureUri).resize(200, 200).into(imageView);
             //imageView.setImageURI(bookPictureUri);
         }
 

@@ -171,6 +171,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Setup onTouchListeners on all input fields to determine whether the user has
         // touched them so we can warn about unsaved changes
+        mImageView.setOnTouchListener(mTouchListener);
         mNameEditText.setOnTouchListener(mTouchListener);
         mSectionEditText.setOnTouchListener(mTouchListener);
         mAuthorEditText.setOnTouchListener(mTouchListener);
@@ -503,7 +504,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
 
             // Update the views with values from the db
-            Picasso.get().load(picture).into(mImageView);
+            if (picture == null || picture.equals("")) {
+                Picasso.get().load(R.drawable.ic_empty_shelter).resize(200,200).into(mImageView);
+            } else {
+                Picasso.get().load(Uri.parse(picture)).resize(200, 200).into(mImageView);
+            }
+
             mNameEditText.setText(name);
             mSectionEditText.setText(section);
             mAuthorEditText.setText(author);

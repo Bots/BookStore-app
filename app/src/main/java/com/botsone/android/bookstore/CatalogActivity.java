@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     private Uri mUri;
 
+    private Button mSaleButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+//        mSaleButton = (Button) findViewById(R.id.sale_button);
+//
+//        mSaleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Todo: implement sale button
+//            }
+//        });
         // Find the listView which will be populated with book data
         ListView bookListView = (ListView) findViewById(R.id.list);
 
