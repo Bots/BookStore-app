@@ -44,10 +44,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     ImageView imageView;
 
-    private Uri mUri;
-
-    private Button mSaleButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +58,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-//        mSaleButton = (Button) findViewById(R.id.sale_button);
-//
-//        mSaleButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //Todo: implement sale button
-//            }
-//        });
         // Find the listView which will be populated with book data
         ListView bookListView = (ListView) findViewById(R.id.list);
 
@@ -132,9 +120,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     /**
-     * Helper to delete all pets from the db for testing purposes
+     * Helper to delete all books from the db for testing purposes
      */
-    private void deleteAllPets() {
+    private void deleteAllBooks() {
         int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI,
                 null,
                 null);
@@ -160,7 +148,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                deleteAllPets();
+                deleteAllBooks();
                 return true;
         }
         return super.onOptionsItemSelected(item);

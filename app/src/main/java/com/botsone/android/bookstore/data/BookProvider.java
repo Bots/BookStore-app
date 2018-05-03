@@ -102,6 +102,7 @@ public class BookProvider extends ContentProvider {
         }
     }
 
+
     /**
      * Insert a book into the database with the given content values. Return the new content URI
      * for that specific row in the database.

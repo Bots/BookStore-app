@@ -119,6 +119,10 @@
     <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
     <string name="discard">Discard</string>
 
+    <string name="sale_button_zero">No more stock!</string>
+
+    <string name="sale_button_label">Sale</string>
+
     <!-- Dialog button text for the option to keep editing the current pet [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
 
