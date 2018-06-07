@@ -107,7 +107,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // and Star Wars attributes are the values
         ContentValues values = new ContentValues();
 
-        values.put(BookEntry.COLUMN_BOOK_PICTURE, Picasso.get().load(R.drawable.ic_empty_shelter).toString());
+        Uri uri = Uri.parse("android.resource://com.botsone.android.bookstore/drawable/ic_empty_shelter");
+
+        values.put(BookEntry.COLUMN_BOOK_PICTURE, uri.toString());
         values.put(BookEntry.COLUMN_BOOK_NAME, "Star Wars");
         values.put(BookEntry.COLUMN_BOOK_SECTION, "Sci-fi");
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, "George Danson");
