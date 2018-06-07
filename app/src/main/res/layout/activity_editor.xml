@@ -173,19 +173,39 @@
             <!-- Label -->
             <TextView
                 style="@style/CategoryStyle"
-                android:layout_width="match_parent"
-                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_weight="8"
                 android:text="@string/book_quantity" />
 
             <!-- Section field -->
             <EditText
                 android:id="@+id/edit_book_quantity"
                 style="@style/EditorFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
                 android:hint="@string/hint_book_quantity"
                 android:inputType="number" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/minus_button"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <Button
+                    android:id="@+id/plus_button"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Supplier category -->
@@ -222,7 +242,7 @@
             <TextView
                 style="@style/CategoryStyle"
                 android:layout_width="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="8"
                 android:text="@string/book_supplier_phone" />
 
             <!-- Section field -->
@@ -230,10 +250,24 @@
                 android:id="@+id/edit_book_supplier_phone"
                 style="@style/EditorFieldStyle"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:hint="@string/hint_book_supplier_phone"
                 android:inputType="phone" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/call_button"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Call" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

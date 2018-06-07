@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -106,7 +107,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // and Star Wars attributes are the values
         ContentValues values = new ContentValues();
 
-        values.put(BookEntry.COLUMN_BOOK_PICTURE, "");
+        values.put(BookEntry.COLUMN_BOOK_PICTURE, Picasso.get().load(R.drawable.ic_empty_shelter).toString());
         values.put(BookEntry.COLUMN_BOOK_NAME, "Star Wars");
         values.put(BookEntry.COLUMN_BOOK_SECTION, "Sci-fi");
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, "George Danson");

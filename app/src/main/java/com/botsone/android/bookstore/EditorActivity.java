@@ -3,6 +3,7 @@ package com.botsone.android.bookstore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -104,6 +106,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private ImageView mImageView;
 
+    private Button mMinusButton;
+    private Button mPlusButton;
+
+    private Button mCallButton;
+
     private static final int PICK_IMAGE_REQUEST = 0;
     private static final int SEND_MAIL_REQUEST = 1;
 
@@ -146,11 +153,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             setTitle(R.string.editor_activity_title_edit_book);
         }
 
-        // Initialize a loader to read the book data from the db and display
-        // the current values in the editor
-        getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
-
         // Find all the relevant views that we will need to read user input from
+        mMinusButton = (Button) findViewById(R.id.minus_button);
+        mPlusButton = (Button) findViewById(R.id.plus_button);
+        mCallButton = (Button) findViewById(R.id.call_button);
         mImageView = (ImageButton) findViewById(R.id.edit_image_view);
         mNameEditText = (EditText) findViewById(R.id.edit_book_name);
         mSectionEditText = (EditText) findViewById(R.id.edit_book_section);
@@ -161,11 +167,59 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierEditText = (EditText) findViewById(R.id.edit_book_supplier);
         mSupplierPhoneEditText = (EditText) findViewById(R.id.edit_book_supplier_phone);
 
-        // Set up onClickListener for imageView
+        // Initialize a loader to read the book data from the db and display
+        // the current values in the editor
+        getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
+
+
+
+                // Set up onClickListener for imageView
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImageSelector();
+            }
+        });
+
+        // Set up click listener for minus button
+        mMinusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String quantityString = mQuantityEditText.getText().toString();
+                int quantity = Integer.parseInt(quantityString);
+
+                if (quantity > 0) {
+                    quantity --;
+                    String newQuantity = String.valueOf(quantity);
+                    mQuantityEditText.setText(newQuantity);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.sale_button_zero, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        // Set up click listener for plus button
+        mPlusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String quantityString = mQuantityEditText.getText().toString();
+                int quantity = Integer.parseInt(quantityString);
+
+                quantity ++;
+                String newQuantity = String.valueOf(quantity);
+                mQuantityEditText.setText(newQuantity);
+            }
+        });
+
+        // Set up click listener for call button
+        mCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneNumber = mSupplierPhoneEditText.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + phoneNumber));
+                startActivity(intent);
             }
         });
 
@@ -211,8 +265,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mUri = resultData.getData();
                 Log.i(LOG_TAG, "Uri: " + mUri.toString());
 
-                //mTextView.setText(mUri.toString());
-                mImageView.setImageBitmap(getBitmapFromUri(mUri));
+                //mImageView.setImageBitmap(getBitmapFromUri(mUri));
+                Picasso.get().load(mUri).resize(400,400).into(mImageView);
 
             }
         } else if (requestCode == SEND_MAIL_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -274,6 +328,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Read input from fields
         // Use trim to trim leading or trailing whitespace
 
+        String pictureString;
+        if (mUri != null) {
+            pictureString = mUri.toString();
+        } else {
+            Cursor cursor = getContentResolver().query(mCurrentBookUri, null, null, null, null);
+            cursor.moveToFirst();
+            pictureString = cursor.getString(cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE));
+
+        }
         String nameString = mNameEditText.getText().toString().trim();
         String sectionString = mSectionEditText.getText().toString().trim();
         String authorString = mAuthorEditText.getText().toString().trim();
@@ -292,27 +355,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // and book attributes from the editor are the values.
         ContentValues values = new ContentValues();
 
-        if (mUri == null) {
-            values.put(BookEntry.COLUMN_BOOK_PICTURE, mCurrentBookUri.toString());
-            values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
-            values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
-            values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
-            values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
-            values.put(BookEntry.COLUMN_BOOK_PRICE, price);
-            values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
-            values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
-            values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
-        } else {
-            values.put(BookEntry.COLUMN_BOOK_PICTURE, mUri.toString());
-            values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
-            values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
-            values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
-            values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
-            values.put(BookEntry.COLUMN_BOOK_PRICE, price);
-            values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
-            values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
-            values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
-        }
+        values.put(BookEntry.COLUMN_BOOK_PICTURE, pictureString);
+        values.put(BookEntry.COLUMN_BOOK_NAME, nameString);
+        values.put(BookEntry.COLUMN_BOOK_SECTION, sectionString);
+        values.put(BookEntry.COLUMN_BOOK_AUTHOR, authorString);
+        values.put(BookEntry.COLUMN_BOOK_PUBLISHER, publisherString);
+        values.put(BookEntry.COLUMN_BOOK_PRICE, price);
+        values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER, supplierString);
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE, supplierNumberString);
 
         // Determine if this is a new book or not by checking if mCurrentBookUri is null
         if (mCurrentBookUri == null)
@@ -365,7 +416,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return true;
     }
 
-    // This method is called after invaliateOptionsMenu so that the menu can be updated
+    // This method is called after invalidateOptionsMenu so that the menu can be updated
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -384,7 +435,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save book to db
 
                 // Check to make sure name price and quantity are entered
                 if (mNameEditText.getText().toString().isEmpty() ||
@@ -503,13 +553,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String supplier = cursor.getString(supplierColumnIndex);
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
 
-            // Update the views with values from the db
-            if (picture == null || picture.equals("")) {
-                Picasso.get().load(R.drawable.ic_empty_shelter).resize(200,200).into(mImageView);
-            } else {
-                Picasso.get().load(Uri.parse(picture)).resize(200, 200).into(mImageView);
-            }
-
+            //mImageView.setImageURI(Uri.parse(picture));
+            Picasso.get().load(Uri.parse(picture)).resize(400, 400).into(mImageView);
             mNameEditText.setText(name);
             mSectionEditText.setText(section);
             mAuthorEditText.setText(author);
@@ -524,6 +569,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // If the loader is invalidated, clear out all data from the input fields
+        mImageView.setImageURI(null);
         mNameEditText.setText("");
         mSectionEditText.setText("");
         mAuthorEditText.setText("");

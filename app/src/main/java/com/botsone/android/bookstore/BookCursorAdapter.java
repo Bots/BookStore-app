@@ -104,12 +104,6 @@ public class BookCursorAdapter extends CursorAdapter {
         bookQuantity = cursor.getInt(quantityColumnIndex);
         Uri bookPictureUri = Uri.parse(bookPicture);
 
-        if (bookPictureUri == null || bookPicture.equals("")) {
-            Picasso.get().load(R.drawable.ic_empty_shelter).resize(200, 200).into(imageView);
-        } else {
-            Picasso.get().load(bookPictureUri).resize(200, 200).into(imageView);
-        }
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,53 +118,15 @@ public class BookCursorAdapter extends CursorAdapter {
             }
         });
 
+        if (bookPicture != null) {
+            Picasso.get().load(bookPictureUri).into(imageView);
+        } else {
+            Picasso.get().load(R.drawable.ic_empty_shelter).into(imageView);
+        }
         nameTextView.setText(bookName);
         priceTextView.setText("$" + bookPrice.toString());
         quantityTextView.setText(Integer.toString(bookQuantity));
-//
-//        // Find the columns of book attributes that we want
-//        int pictureColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE);
-//        int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
-//        int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRICE);
-//        final int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
-//
-//        // Read the book attributes from the cursor for the current book
-//        String bookPicture = cursor.getString(pictureColumnIndex);
-//        String bookName = cursor.getString(nameColumnIndex);
-//        Double bookPrice = cursor.getDouble(priceColumnIndex);
-//        bookQuantity = cursor.getInt(quantityColumnIndex);
-//
-//        Uri bookPictureUri = Uri.parse(bookPicture);
-//        final Uri bookQuantityUri = Uri.parse((Integer.toString(bookQuantity)));
-//
-//        final Uri bookUri = BookEntry.CONTENT_URI;
-//
-//        final ContentValues values = new ContentValues();
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                bookQuantity = bookQuantity - 1;
-//                quantityTextView.setText(Integer.toString(bookQuantity));
-//                values.put(BookEntry.COLUMN_BOOK_QUANTITY, bookQuantity);
-//                context.getContentResolver().update(bookUri, values, null, null);
-//            }
-//        });
-
-
-
-//        //Update the imageView with pic from current book
-//        if (bookPictureUri == null || bookPicture.equals("")) {
-//            Picasso.get().load(R.drawable.ic_empty_shelter).resize(200, 200).into(imageView);
-//        } else {
-//            Picasso.get().load(bookPictureUri).resize(200, 200).into(imageView);
-//        }
-//
-//        // Update the textviews with the attributes for the current book
-//        nameTextView.setText(bookName);
-//        priceTextView.setText("$" + bookPrice.toString());
-//        quantityTextView.setText(Integer.toString(bookQuantity));
     }
-
 
 }
