@@ -143,7 +143,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // If the intent doesn't contain a specific URI we know to create a new book
         if (mCurrentBookUri == null) {
-            // This is a new pet, change the app bar to say "Add a Book"
+            // This is a new book, change the app bar to say "Add a Book"
             setTitle(R.string.editor_activity_title_new_book);
 
             // Invalidate the options menu so "Delete" doesn't appear and confuse user
@@ -590,7 +590,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the book.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -612,14 +612,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
-                deletePet();
+                // User clicked the "Delete" button, so delete the book.
+                deleteBook();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the book.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -634,7 +634,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /**
      * Perform the deletion of the book in the database.
      */
-    private void deletePet() {
+    private void deleteBook() {
         // Only perform delete if this is an existing book
         if (mCurrentBookUri != null) {
             // Call the ContentResolver to delete the book at the given content URI.
