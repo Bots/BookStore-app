@@ -9,10 +9,10 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_empty_shelter"
+        android:src="@drawable/ic_empty"
         android:layout_weight="1"
         android:id="@+id/list_item_image_view"
-        tools:src="@drawable/ic_empty_shelter"
+        tools:src="@drawable/ic_empty"
         android:layout_marginRight="18dp"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="20dp"/>
@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <TextView

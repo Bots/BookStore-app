@@ -16,7 +16,7 @@ public class BookDbHelper extends SQLiteOpenHelper{
     /**
      * Database version, if you change schema, increment this
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public BookDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

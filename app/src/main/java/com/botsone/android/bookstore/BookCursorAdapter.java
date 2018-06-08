@@ -121,7 +121,7 @@ public class BookCursorAdapter extends CursorAdapter {
         if (bookPicture != null) {
             Picasso.get().load(bookPictureUri).into(imageView);
         } else {
-            Picasso.get().load(R.drawable.ic_empty_shelter).into(imageView);
+            Picasso.get().load(R.drawable.ic_empty).into(imageView);
         }
         nameTextView.setText(bookName);
         priceTextView.setText("$" + bookPrice.toString());
