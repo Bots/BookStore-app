@@ -15,16 +15,22 @@ import com.botsone.android.bookstore.data.BookContract.BookEntry;
 
 public class BookProvider extends ContentProvider {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = BookProvider.class.getSimpleName();
 
     // Database helper object
     private BookDbHelper mDbHelper;
 
-    /** URI matcher code for the content URI for the books table */
+    /**
+     * URI matcher code for the content URI for the books table
+     */
     private static final int BOOKS = 100;
 
-    /** URI matcher code for the content URI for a single book in the books table */
+    /**
+     * URI matcher code for the content URI for a single book in the books table
+     */
     private static final int BOOK_ID = 101;
 
     /**
@@ -71,7 +77,7 @@ public class BookProvider extends ContentProvider {
                 break;
             case BOOK_ID:
                 selection = BookEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(BookEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
@@ -116,7 +122,7 @@ public class BookProvider extends ContentProvider {
 
         // Check that the price is not null or negative
         Integer price = values.getAsInteger(BookEntry.COLUMN_BOOK_PRICE);
-        if (price == null ) {
+        if (price == null) {
             throw new IllegalArgumentException("Book requires a price");
         } else if (price < 0) {
             throw new IllegalArgumentException("Book price cannot be negative");
@@ -164,7 +170,7 @@ public class BookProvider extends ContentProvider {
                 // so we know which row to update. Selection will be "_id=?" and selection
                 // arguments will be a String array containing the actual ID.
                 selection = BookEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateBook(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);

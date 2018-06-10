@@ -119,6 +119,8 @@
     <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
     <string name="discard">Discard</string>
 
+    <string name="no_dialer_installed">There is no dialer app installed.</string>
+
     <string name="sale_button_zero">No more stock!</string>
 
     <string name="sale_button_label">Sale</string>

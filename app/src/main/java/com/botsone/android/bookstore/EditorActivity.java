@@ -171,9 +171,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // the current values in the editor
         getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
 
-
-
-                // Set up onClickListener for imageView
+        // Set up onClickListener for imageView
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,17 +183,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mMinusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mQuantityEditText.getText().toString().equals("")) {
+                    mQuantityEditText.setText("1");
+                }
                 String quantityString = mQuantityEditText.getText().toString();
                 int quantity = Integer.parseInt(quantityString);
 
-                if (quantity > 0) {
-                    quantity --;
-                    String newQuantity = String.valueOf(quantity);
-                    mQuantityEditText.setText(newQuantity);
-                } else {
+                if (quantity < 1) {
                     Toast.makeText(getApplicationContext(), R.string.sale_button_zero, Toast.LENGTH_SHORT).show();
+                } else {
+                    quantity--;
                 }
-
+                mQuantityEditText.setText(String.valueOf(quantity));
             }
         });
 
@@ -203,12 +202,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPlusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mQuantityEditText.getText().toString().equals("")) {
+                    mQuantityEditText.setText("0");
+                }
                 String quantityString = mQuantityEditText.getText().toString();
                 int quantity = Integer.parseInt(quantityString);
-
-                quantity ++;
-                String newQuantity = String.valueOf(quantity);
-                mQuantityEditText.setText(newQuantity);
+                quantity++;
+                mQuantityEditText.setText(String.valueOf(quantity));
             }
         });
 
@@ -219,7 +219,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 String phoneNumber = mSupplierPhoneEditText.getText().toString();
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + phoneNumber));
-                startActivity(intent);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.no_dialer_installed, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -266,11 +273,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Log.i(LOG_TAG, "Uri: " + mUri.toString());
 
                 //mImageView.setImageBitmap(getBitmapFromUri(mUri));
-                Picasso.get().load(mUri).resize(400,400).into(mImageView);
-
+                Picasso.get().load(mUri).resize(400, 400).into(mImageView);
             }
-        } else if (requestCode == SEND_MAIL_REQUEST && resultCode == Activity.RESULT_OK) {
-
         }
     }
 
@@ -332,11 +336,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mUri != null) {
             pictureString = mUri.toString();
         } else {
-            Cursor cursor = getContentResolver().query(mCurrentBookUri, null, null, null, null);
-            cursor.moveToFirst();
-            pictureString = cursor.getString(cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PICTURE));
-
+            mUri = Uri.parse("android.resource://com.botsone.android.bookstore/drawable/ic_empty");
+            pictureString = mUri.toString();
         }
+
         String nameString = mNameEditText.getText().toString().trim();
         String sectionString = mSectionEditText.getText().toString().trim();
         String authorString = mAuthorEditText.getText().toString().trim();
@@ -368,45 +371,45 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Determine if this is a new book or not by checking if mCurrentBookUri is null
         if (mCurrentBookUri == null)
 
-    {
-        // NEW BOOK - insert book into the provider, return the URI for the new book
-        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+        {
+            // NEW BOOK - insert book into the provider, return the URI for the new book
+            Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
 
-        // Pop toast saying whether or not we had success
-        if (newUri == null) {
-            // ERROR
-            Toast.makeText(this, getString(R.string.editor_insert_book_failed),
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            // Insertion successful
-            Toast.makeText(this, getString(R.string.editor_insert_book_successful),
-                    Toast.LENGTH_SHORT).show();
+            // Pop toast saying whether or not we had success
+            if (newUri == null) {
+                // ERROR
+                Toast.makeText(this, getString(R.string.editor_insert_book_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Insertion successful
+                Toast.makeText(this, getString(R.string.editor_insert_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } else
+
+        {
+            // EXISTING BOOK - update book with content URI mCurrentBookUri and pass in the
+            // new ContentValues. Pass null for selection and selectionArgs because mCurrentBookUri
+            // will already identify the correct row in the db that we want to modify
+            int rowsAffected = getContentResolver().update(mCurrentBookUri, values,
+                    null, null);
+
+            // Pop toast saying whether update was successful
+            if (rowsAffected == 0) {
+                // ERROR
+                Toast.makeText(this, getString(R.string.editor_update_book_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // update successful
+                Toast.makeText(this, getString(R.string.editor_update_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+
         }
-
-    } else
-
-    {
-        // EXISTING BOOK - update book with content URI mCurrentBookUri and pass in the
-        // new ContentValues. Pass null for selection and selectionArgs because mCurrentBookUri
-        // will already identify the correct row in the db that we want to modify
-        int rowsAffected = getContentResolver().update(mCurrentBookUri, values,
-                null, null);
-
-        // Pop toast saying whether update was successful
-        if (rowsAffected == 0) {
-            // ERROR
-            Toast.makeText(this, getString(R.string.editor_update_book_failed),
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            // update successful
-            Toast.makeText(this, getString(R.string.editor_update_book_successful),
-                    Toast.LENGTH_SHORT).show();
-        }
-
 
     }
-
-}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

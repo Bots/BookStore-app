@@ -77,7 +77,6 @@ public class BookCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, final Cursor cursor) {
 
 
-
         // Find the views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);

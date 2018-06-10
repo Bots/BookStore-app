@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.botsone.android.bookstore.data.BookContract.BookEntry;
 
-public class BookDbHelper extends SQLiteOpenHelper{
+public class BookDbHelper extends SQLiteOpenHelper {
 
     /**
      * name of the database file
